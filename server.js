@@ -4,21 +4,12 @@ const port = 3030;
 const userRoutes = require("./routes/userRoutes");
 const mainRoutes = require("./routes/mainRoutes");
 const postRoutes = require("./routes/postRoutes");
-
-function middleware(req, res, next) {
-  res.customData = "This is custom data";
-  next();
-}
-
-function authenticate(req, res, next) {
-    res.statusCode=401;
-    res.send("You are not authenticated");
-    next();
-}
+const middleware = require("./middlewares/basicMiddle");
+const auth = require("./middlewares/auth");
 
 app.use("/", middleware, mainRoutes);
 app.use("/posts", middleware, postRoutes);
-app.use("/users", authenticate, userRoutes);
+app.use("/users", auth, userRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
