@@ -8,6 +8,11 @@ const validHTML = `<!DOCTYPE html>
     </head>
     <body>
         <h1>Welcome to My Server, How are you doing guys?</h1>
+        <ul>
+            <li>Home</li>
+            <li>About</li>
+            <li>Contact</li>
+        </ul>
     </body>
 </html>`;
 const server = http.createServer((req, res) => {
