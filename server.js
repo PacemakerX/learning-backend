@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 const port = 3030;
-const postRoutes = require("./postRoutes");
-const userRoutes = require("./userRoutes");
-const mainRoutes = require("./mainRoutes");
+const userRoutes = require("./routes/userRoutes");
+const mainRoutes = require("./routes/mainRoutes");
+const postRoutes = require("./routes/postRoutes");
 
 function middleware(req, res, next) {
   res.customData = "This is custom data";

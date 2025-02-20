@@ -2,14 +2,15 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-    res.send(`
+  res.send(`
                 <!DOCTYPE html>
                 <html>
                 <head>
                         <title>Posts</title>
                 </head>
                 <body>
-                        <h1>Posts</h1>
+                        <h1>Posts</h1> 
+                        <h1>${res.customData} </h1>
                         <p>Welcome to the posts page!</p>
                         <div class="post">
                                 <h2>Post Title 1</h2>
@@ -25,7 +26,7 @@ router.get("/", (req, res) => {
 });
 
 router.put("/", (req, res) => {
-    res.send(`
+  res.send(`
                 <!DOCTYPE html>
                 <html>
                 <head>
@@ -33,6 +34,7 @@ router.put("/", (req, res) => {
                 </head>
                 <body>
                         <h1>Post Updated</h1>
+                         <h1>${res.customData} </h1>
                         <p>Your post has been updated successfully.</p>
                 </body>
                 </html>
