@@ -6,7 +6,7 @@ const server = http.createServer((req, res) => {
   let response = "";
   if (req.url === "/") response = "hello world";
   else if (req.url === "/home") response = "Welcome to Home page";
-  else if (req.url === "/about") response = "Welcome to about page";
+  else if (req.url === "/about") response = "Welcome to about page"; // adds nodemon which automatically restaarts the server with each save
   else response = "Page not found";
   res.write(response);
   res.end();
