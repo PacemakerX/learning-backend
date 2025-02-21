@@ -2,18 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.send(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                            <title>Hello World</title>
-                    </head>
-                    <body>
-                            <h1>${res.customData} </h1>
-                            <h1>Hello World</h1>
-                    </body>
-                    </html>
-            `);
+  console.log("Recevied a request");
+  res.send({
+    message: "Hello from the server How are yoou dooing?",
+    anotherMessage: "This is another message from the server",
+  });
 });
 
 router.put("/", (req, res) => {
