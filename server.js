@@ -7,6 +7,8 @@ const mainRoutes = require("./routes/mainRoutes");
 const postRoutes = require("./routes/postRoutes");
 const middleware = require("./middlewares/basicMiddle");
 const auth = require("./middlewares/auth");
+const connectToDatabase = require("./db");
+connectToDatabase(); 
 
 app.use("/", middleware, mainRoutes);
 app.use("/posts", middleware, postRoutes);
