@@ -12,9 +12,9 @@ connectToDatabase();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/post",middleware, postRoutes);
+app.use("/api/post", middleware, postRoutes);
+app.use("/api/users", middleware, userRoutes);
 app.use("/", middleware, mainRoutes);
-// app.use("/users", auth, userRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
