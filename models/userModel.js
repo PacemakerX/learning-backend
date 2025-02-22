@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema(
   {
@@ -7,12 +8,12 @@ const userSchema = new mongoose.Schema(
       required: [true, "Username is required"],
       trim: true,
       maxLengh: 50,
-      unique: true,
+    //   unique: true,
     },
     email: {
       type: String,
       required: [true, "Email is required"],
-      unique: true,
+    //   unique: true,
     },
     password: {
       type: String,
@@ -27,10 +28,14 @@ const userSchema = new mongoose.Schema(
 
 userSchema.statics.register = async function (name, email, password) {
   try {
+    // Hash the password using bcrypt
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const user = new this({
       name,
       email,
-      password,
+      password: hashedPassword, // Store the hashed password
     });
     const newUser = await user.save();
     return newUser;
