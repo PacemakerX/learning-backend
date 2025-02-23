@@ -30,19 +30,23 @@ userSchema.statics.register = async function (name, email, password) {
   try {
     // Validate email format
     if (!validator.isEmail(email)) {
-        throw new Error("Invalid email format.");
-      }
-  
-      // Validate password strength
-      if (!validator.isStrongPassword(password, {
+      throw new Error("Invalid email format.");
+    }
+
+    // Validate password strength
+    if (
+      !validator.isStrongPassword(password, {
         minLength: 8,
         minLowercase: 1,
         minUppercase: 1,
         minNumbers: 1,
         minSymbols: 1,
-      })) {
-        throw new Error("Weak password. It must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.");
-      }
+      })
+    ) {
+      throw new Error(
+        "Weak password. It must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character."
+      );
+    }
     // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -63,8 +67,13 @@ userSchema.statics.register = async function (name, email, password) {
 
 userSchema.statics.login = async function (email, password) {
   try {
-    const user = await this.findOne({ email, password });
+
+    const user = await this.findOne({ email });
     if (!user) {
+      throw new Error("Invalid login credentials");
+    }
+    const isStrongPasswordValid= await bcrypt.compare(password, user.password);
+    if (!isStrongPasswordValid) {
       throw new Error("Invalid login credentials");
     }
     return user;
