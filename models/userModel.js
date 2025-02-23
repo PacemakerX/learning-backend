@@ -82,10 +82,10 @@ userSchema.statics.login = async function (email, password) {
   }
 };
 
-userSchema.statics.getUsers = async function () {
+userSchema.statics.getUser = async function (email) {
   try {
-    const users = await this.find();
-    return users;
+    const user = await this.findOne(email);
+    return user;
   } catch (error) {
     throw new Error("Error getting users: " + error.message);
   }
