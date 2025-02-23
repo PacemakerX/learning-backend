@@ -6,11 +6,11 @@ router.post("/register", (req, res) => {
     registerUser(req, res);
 });
 
-router.get("/login", (req, res) => {
+router.post("/login", (req, res) => {
     loginUser(req, res);
 });
 
-router.get("/profile", (req, res) => {
+router.post("/profile", (req, res) => {
     getUserProfile(req, res);
 });
 
