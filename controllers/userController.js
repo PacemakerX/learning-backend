@@ -1,4 +1,6 @@
 const userModels = require("../models/userModel");
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = "my Secret";
 
 const registerUser = async (req, res) => {
   try {
@@ -13,12 +15,17 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    if(!email || !password) {
+    if (!email || !password) {
       throw new Error("Invalid login credentials");
     }
-    
     const user = await userModels.login(email, password);
-    res.status(200).json(user);
+    const token = jwt.sign({ email: user.email }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    res.status(200).json({
+      message: "Login successful",
+      token,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
