@@ -31,13 +31,42 @@ const loginUser = async (req, res) => {
   }
 };
 
-const getUsers = async (req, res) => {
+const getUserProfile = async (req, res) => {
   try {
-    const users = await userModels.getUsers();
-    res.status(200).json(users);
+    // Check if the Authorization header exists
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: Missing or invalid token format." });
+    }
+
+    // Extract token from Authorization header
+    const token = authHeader.split(" ")[1];
+
+    // Verify JWT
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    if (!decoded || !decoded.email) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    // Fetch user details using email
+    const user = await userModels.getUser({ email: decoded.email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    res
+      .status(200)
+      .json({ message: "User profile fetched successfully", user });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res
+      .status(401)
+      .json({ message: "Unauthorized: Invalid or expired token." });
   }
 };
 
-module.exports = { registerUser, loginUser, getUsers };
+module.exports = getUserProfile;
+
+module.exports = { registerUser, loginUser, getUserProfile };
