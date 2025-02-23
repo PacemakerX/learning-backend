@@ -13,6 +13,10 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if(!email || !password) {
+      throw new Error("Invalid login credentials");
+    }
+    
     const user = await userModels.login(email, password);
     res.status(200).json(user);
   } catch (error) {
