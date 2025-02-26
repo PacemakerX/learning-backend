@@ -1,6 +1,6 @@
 const userModels = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "my Secret";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const registerUser = async (req, res) => {
   try {
