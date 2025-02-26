@@ -1,20 +1,19 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 3030;
+require("dotenv").config();
+const port = process.env.PORT;
 const userRoutes = require("./routes/userRoutes");
-const mainRoutes = require("./routes/mainRoutes");
 const postRoutes = require("./routes/postRoutes");
-const middleware = require("./middlewares/basicMiddle");
-const auth = require("./middlewares/auth");
+const canvasRoutes = require("./routes/canvasRoutes");
 const connectToDatabase = require("./db");
 connectToDatabase();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/post", middleware, postRoutes);
-app.use("/api/users", middleware, userRoutes);
-app.use("/", middleware, mainRoutes);
+app.use("/api/post", postRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/canvas", canvasRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
