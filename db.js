@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const url =
-  "mongodb+srv://sparsh:first@cluster0.twrbx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+require('dotenv').config();
+const url = process.env.MONGODB_URL;
 
 const connectionParams = {
   useNewUrlParser: true,
