@@ -32,4 +32,26 @@ const deleteCanvas = async (req, res) => {
   }
 };
 
-module.exports = { getAllCanvases, createCanvas, deleteCanvas };
+const updateCanvas = async (req, res) => {
+  try {
+    const { email, canvasName, newName, sharedEmails } = req.body;
+
+    if (!email || !canvasName) {
+      return res
+        .status(400)
+        .json({ message: "Email and Canvas Name are required" });
+    }
+
+    const updatedCanvas = await canvasModel.updateCanvas(
+      email,
+      canvasName,
+      newName,
+      sharedEmails
+    );
+    res.status(200).json(updatedCanvas);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+module.exports = { getAllCanvases, createCanvas, deleteCanvas, updateCanvas };

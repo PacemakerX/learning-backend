@@ -46,7 +46,7 @@ canvasSchema.statics.getAllCanvases = async function (email) {
 
 canvasSchema.statics.createCanvas = async function (email, name) {
   try {
-    const user = await mongoose.model("User").findOne(({ email }));
+    const user = await mongoose.model("User").findOne({ email });
     if (!user) {
       throw new Error("User not found");
     }
@@ -92,6 +92,46 @@ canvasSchema.statics.deleteCanvas = async function (email, canvasName) {
   }
 };
 
+canvasSchema.statics.updateCanvas = async function (
+  email,
+  canvasName,
+  newName,
+  sharedEmails
+) {
+  try {
+    const user = await mongoose.model("User").findOne({ email });
+    if (!user) throw new Error("User not found");
+
+    const canvas = await this.findOne({ owner: user._id, name: canvasName });
+    if (!canvas) throw new Error("Canvas not found");
+
+    if (newName) {
+      canvas.name = newName;
+    }
+
+    if (sharedEmails && sharedEmails.length > 0) {
+      const usersToAdd = await mongoose
+        .model("User")
+        .find({ email: { $in: sharedEmails } });
+
+      if (usersToAdd.length === 0) {
+        throw new Error("No valid users found to share");
+      }
+
+      const userIdsToAdd = usersToAdd.map((user) => user._id);
+
+      // Use $addToSet to avoid duplicates
+      await this.updateOne(
+        { _id: canvas._id },
+        { $addToSet: { sharedWith: { $each: userIdsToAdd } } }
+      );
+    }
+
+    return await this.findById(canvas._id); // Return updated canvas
+  } catch (error) {
+    throw new Error(`Update failed: ${error.message}`);
+  }
+};
 
 const Canvas = mongoose.model("Canvas", canvasSchema);
 
